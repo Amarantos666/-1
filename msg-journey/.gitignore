@@ -4,3 +4,4 @@ assets/bgm_090.wav
 assets/*.mp3
 assets/*.wav
 public/audio/
+*.mp4
