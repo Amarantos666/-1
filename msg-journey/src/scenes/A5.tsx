@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CameraRig, Label3D, Orb, Stars, Glow} from '../three/common';
@@ -17,7 +18,7 @@ export const ROUTES = [
   {key: 'Tata TGN-Pacific', short: 'TGN-Pacific', w: 0.15},
 ];
 export const N_PACKETS = 2143; // 3,000,000 B / 1,400 B
-export const A5_ARRIVE = 7.6;
+export const A5_ARRIVE = ev('A5', 7.6);
 export const LIFT = [0.05, 0.42, 0.78, 0.22, 1.1];
 
 export function useRoutes(data: GlobeData | null) {

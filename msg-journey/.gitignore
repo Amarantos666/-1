@@ -1,3 +1,6 @@
 node_modules/
 out/
 assets/bgm_090.wav
+assets/*.mp3
+assets/*.wav
+public/audio/

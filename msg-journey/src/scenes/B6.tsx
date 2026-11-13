@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CameraRig, Dust, Glow, GridFloor, Label3D, Stars} from '../three/common';
@@ -5,7 +6,7 @@ import {Crystal, MemoryBoard, OUR_SLOT, slotPos} from '../three/Memory';
 import {decay, easeIn, easeInOut, easeOut, hash1, lerp, ramp, smooth} from '../lib/math';
 import {C, FONT_EN, FONT_ZH} from '../theme';
 
-export const B6_FLASH = 2.6, B6_FLASH_END = 5.6, B6_FORM = 5.8, B6_DOCK = 8.6, B6_LAND = 10.2;
+export const B6_FLASH = ev('B6', 2.4), B6_FLASH_END = B6_FLASH + 3.0, B6_FORM = B6_FLASH + 3.2, B6_DOCK = ev('B6', 8.6, false), B6_LAND = ev('B6', 10.2);
 const STACK = new THREE.Vector3(0, 2.4, -5.5), LAYERS = 12, LAYER_GAP = 0.34, PLATE = 4.2;
 const BOARD_Y = -1.4;
 const NB = 420; // input blocks rising into the stack

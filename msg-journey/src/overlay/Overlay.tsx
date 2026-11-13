@@ -9,7 +9,9 @@ const accent = (p: Shot['palette']) => (p === 'A' ? C.cyan : p === 'B' ? '#C77DF
 export const Overlay: React.FC<{t: number; shot: Shot; hideChrome?: boolean}> = ({t, shot, hideChrome}) => {
   const lt = t - shot.from;
   const ac = accent(shot.palette);
-  const cue = shot.cues.find((c) => lt >= c.from && lt < c.to);
+  const dur = shot.to - shot.from;
+  const cue0 = shot.cues.find((c) => lt >= c.from && lt < Math.min(c.to, dur - 0.12));
+  const cue = cue0 ? {...cue0, to: Math.min(cue0.to, dur - 0.12)} : undefined;
   const cueA = cue ? Math.min(ramp(lt, cue.from, cue.from + 0.25), 1 - ramp(lt, cue.to - 0.25, cue.to)) : 0;
   const noteA = shot.note ? Math.min(ramp(lt, 0.3, 0.9), 1 - ramp(lt, shot.to - shot.from - 0.4, shot.to - shot.from)) : 0;
   const chromeA = hideChrome ? 0 : 1;
@@ -18,7 +20,7 @@ export const Overlay: React.FC<{t: number; shot: Shot; hideChrome?: boolean}> = 
       {/* legibility band behind subtitles */}
       <div style={{position: 'absolute', left: 0, right: 0, top: 820, bottom: 0, background: 'linear-gradient(180deg, rgba(6,6,20,0) 0%, rgba(6,6,20,0.5) 45%, rgba(6,6,20,0.62) 100%)', opacity: cue ? 0.4 + 0.6 * cueA : 0.4}} />
       {/* watermark */}
-      <div style={{position: 'absolute', left: 56, top: 40, fontFamily: FONT_ZH, fontWeight: 700, fontSize: 26, letterSpacing: 2, color: 'rgba(255,255,255,0.78)', textShadow: '0 0 12px rgba(120,180,255,0.35)', opacity: chromeA}}>
+      <div style={{position: 'absolute', left: 56, top: 40, fontFamily: FONT_ZH, fontWeight: 700, fontSize: 26, letterSpacing: 2, color: 'rgba(255,255,255,0.78)', textShadow: '0 0 12px rgba(120,180,255,0.35)'}}>
         vibe<span style={{color: ac}}>知识大赏</span>
       </div>
       {/* chapter label + progress */}

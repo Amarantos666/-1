@@ -35,15 +35,16 @@ export type PostProps = {
   saturation?: number; // -1..1
   brightness?: number; contrast?: number;
   grain?: number;
+  q?: string;
 };
 
-export const Post: React.FC<PostProps> = ({frame, bloom = 1.2, bloomThreshold = 0.55, dof = null, vignette = 0.55, aberration = 0, saturation = 0, brightness = 0, contrast = 0, grain = 0.018}) => {
+export const Post: React.FC<PostProps> = ({frame, bloom = 1.2, bloomThreshold = 0.55, dof = null, vignette = 0.55, aberration = 0, saturation = 0, brightness = 0, contrast = 0, grain = 0.018, q = ''}) => {
   const ab = useMemo(() => new THREE.Vector2(), []);
   ab.set(aberration * 0.006, aberration * 0.004);
   return (
-    <EffectComposer multisampling={4} frameBufferType={THREE.HalfFloatType}>
-      {dof ? <DepthOfField worldFocusDistance={dof.distance} worldFocusRange={dof.range} bokehScale={dof.bokeh} resolutionScale={0.5} /> : <></>}
-      <Bloom intensity={bloom} luminanceThreshold={bloomThreshold} luminanceSmoothing={0.25} mipmapBlur radius={0.75} />
+    <EffectComposer multisampling={q.includes('m0') ? 0 : 4} frameBufferType={q.includes('ub') ? THREE.UnsignedByteType : THREE.HalfFloatType}>
+      {dof && !q.includes('nodof') ? <DepthOfField worldFocusDistance={dof.distance} worldFocusRange={dof.range} bokehScale={dof.bokeh} resolutionScale={0.5} /> : <></>}
+      {q.includes('nobloom') ? <></> : <Bloom intensity={bloom} luminanceThreshold={bloomThreshold} luminanceSmoothing={0.25} mipmapBlur radius={0.75} />}
       <ChromaticAberration offset={ab} radialModulation={false} modulationOffset={0} />
       <HueSaturation saturation={saturation} hue={0} />
       <BrightnessContrast brightness={brightness} contrast={contrast} />

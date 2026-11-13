@@ -1,4 +1,5 @@
-// Master timeline (seconds). Beat-snapping happens in later passes; content follows the storyboard.
+// Master timeline (seconds). Shot boundaries are snapped to BGM downbeats at load time.
+import {snapDown, snapBeat} from './lib/beat';
 export type Cue = {from: number; to: number; zh: string; en: string};
 export type Shot = {
   id: string; from: number; to: number; chapter: string; chapterEn: string;
@@ -88,14 +89,29 @@ export const SHOTS: Shot[] = [
     {from: 1.0, to: 7.4, zh: '说完的那一刻，这段“记忆”就被清空，或者只短暂缓存一会儿', en: 'The moment it finishes, the memory is cleared — or cached only briefly.'},
     {from: 7.8, to: 14.6, zh: '下一次你发消息，它会把你们的整段对话，连同那张照片，再从头读一遍', en: 'Next time, it re-reads your whole conversation — photo included — from the top.'},
   ]},
-  {id: 'C1', from: 205, to: 220, chapter: '对比', chapterEn: 'SIDE BY SIDE', palette: 'outro', cues: [
-    {from: 9.6, to: 15, zh: '同样是按下回车——一条被送达，一条被读懂。然后，被忘记。', en: 'Same Enter key — one delivered, one understood. And then, forgotten.'},
-  ]},
+  {id: 'C1', from: 205, to: 220, chapter: '对比', chapterEn: 'SIDE BY SIDE', palette: 'outro', cues: []},
   {id: 'R1', from: 220, to: 228, chapter: '参考资料', chapterEn: 'REFERENCES', palette: 'outro', cues: []},
 ];
 
+// Snap every shot boundary (except the fixed start, the spliced-music section and the end) to a downbeat.
+const FIXED = new Set([0, 205, TOTAL]);
+for (let i = 1; i < SHOTS.length; i++) {
+  const t = SHOTS[i].from;
+  const sn = FIXED.has(t) ? t : snapDown(t);
+  SHOTS[i].from = sn; SHOTS[i - 1].to = sn;
+}
+SHOTS[SHOTS.length - 1].to = TOTAL;
+
+/** Local event time inside a shot, snapped to the nearest downbeat (strong) or beat. */
+export const ev = (id: string, local: number, strong = true) => {
+  const s = SHOTS.find((x) => x.id === id)!;
+  const abs = s.from + local;
+  return (strong ? snapDown(abs, 0.9) : snapBeat(abs)) - s.from;
+};
+export const shotFrom = (id: string) => SHOTS.find((x) => x.id === id)!.from;
+
 export const CHAPTERS = [
-  {label: '开场', from: 0}, {label: 'A 面', from: 20}, {label: 'B 面', from: 90}, {label: '反转', from: 190}, {label: '收尾', from: 205},
+  {label: '开场', from: 0}, {label: 'A 面', from: shotFrom('A0')}, {label: 'B 面', from: shotFrom('B0')}, {label: '反转', from: shotFrom('F1')}, {label: '收尾', from: 205},
 ];
 
 export const shotAt = (t: number) => SHOTS.find((s) => t >= s.from && t < s.to) ?? SHOTS[SHOTS.length - 1];

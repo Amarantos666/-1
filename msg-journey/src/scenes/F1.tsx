@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CameraRig, Dust, Glow, GridFloor, Stars} from '../three/common';
@@ -6,7 +7,7 @@ import {decay, easeInOut, easeOut, hash1, lerp, ramp, smooth} from '../lib/math'
 import {glowTexture} from '../lib/canvas';
 import {C} from '../theme';
 
-export const F1_CRACK = 1.6, F1_SHATTER = 2.6, F1_NEXT = 6.6;
+export const F1_SHATTER = ev('F1', 2.6, false), F1_CRACK = F1_SHATTER - 1.0, F1_NEXT = ev('F1', 6.6, false);
 const BOARD_Y = -1.4;
 
 export function f1Cam(t: number) {

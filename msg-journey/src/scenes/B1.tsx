@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CameraRig, Dust, Glow, GridFloor, Label3D, Orb, Stars} from '../three/common';
@@ -8,7 +9,7 @@ import {Odometer} from '../overlay/Odometer';
 
 const PAPER_W = 5.2, CW = 1024, CH = 4400;
 const TOTAL = (PAPER_W * CH) / CW; // world length of the full scroll
-export const B1_XRAY = 2.0, B1_UNROLL = 3.6, B1_NOTE = 5.2;
+export const B1_XRAY = ev('B1', 2.0, false), B1_UNROLL = ev('B1', 3.6, false), B1_NOTE = ev('B1', 5.2, false);
 const ROLL_R = 0.32;
 
 // Where (in canvas px) each section lives.

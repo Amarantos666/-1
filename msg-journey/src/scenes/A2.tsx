@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CameraRig, Dust, GridFloor, Label3D, Stars} from '../three/common';
@@ -10,7 +11,7 @@ const PW = 160, PH = 100; // photo voxels
 const N = PW * PH;
 const P0 = new THREE.Vector3(4.6, 1.4, 0), PSIZE = 0.04;
 const M0 = new THREE.Vector3(4.2, -2.6, -5), MR = 6.5, MH = 27;
-export const A2_SHATTER = 2.4, A2_SLAM = 6.4, A2_COMPRESS = 7.6, A2_ENCRYPT = 10.0;
+export const A2_SHATTER = ev('A2', 2.4, false), A2_SLAM = ev('A2', 6.4), A2_COMPRESS = ev('A2', 8.4, false), A2_ENCRYPT = ev('A2', 11.0, false);
 const HEX = ['E5', '9C', 'A8', 'E5', '90', '97'];
 
 function useVoxelData() {

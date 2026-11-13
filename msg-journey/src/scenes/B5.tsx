@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CameraRig, Dust, GridFloor, Label3D, Stars} from '../three/common';
@@ -10,7 +11,7 @@ import {Odometer} from '../overlay/Odometer';
 const GX = 24, GY = 16, NP = GX * GY;
 const PH_W = 6.0, PH_H = 4.0, PH_C = new THREE.Vector3(3.6, 1.5, 0);
 const CELL = PH_W / GX;
-export const B5_SPLIT = 0.8, B5_GRID = 6.2, B5_FLY = 7.0, B5_FLY_END = 12.0, B5_NUM = 12.4;
+export const B5_SPLIT = ev('B5', 0.8, false), B5_GRID = ev('B5', 6.4, false), B5_FLY = ev('B5', 7.0, false), B5_FLY_END = 12.0, B5_NUM = ev('B5', 12.4, false);
 const Q0 = new THREE.Vector3(-4.6, 0.2, 1.2), QDIR = new THREE.Vector3(0.42, 0.04, -1).normalize(), QSTEP = 0.5;
 const qPos = (q: number, out = new THREE.Vector3()) => out.copy(Q0).addScaledVector(QDIR, q * QSTEP);
 

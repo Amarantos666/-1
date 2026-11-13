@@ -1,3 +1,4 @@
+import {ev} from '../timeline';
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {RoundedBox} from '@react-three/drei';
@@ -6,10 +7,10 @@ import {drawPhoto, mkCanvas, roundRect, toTex} from '../lib/canvas';
 import {decay, easeInOut, easeOut, lerp, ramp, smooth} from '../lib/math';
 import {C, FONT_EN, FONT_ZH} from '../theme';
 
-export const O1_PRESS = 9.0; // Enter press (beat-aligned later)
+export const O1_PRESS = ev('O1', 9.0); // Enter press on a downbeat
 
-type PanelState = {who: 'friend' | 'ai'; typed: string; caret: boolean; attach: number; sent: number};
-function drawPanel(s: PanelState) {
+export type PanelState = {who: 'friend' | 'ai'; typed: string; caret: boolean; attach: number; sent: number; reply?: string; done?: boolean};
+export function drawPanel(s: PanelState) {
   const W = 720, H = 960;
   const c = mkCanvas(W, H); const g = c.getContext('2d')!;
   const ac = s.who === 'friend' ? C.cyan : '#B07CFF';
@@ -49,6 +50,16 @@ function drawPanel(s: PanelState) {
     g.save(); roundRect(g, 300, y0 + 110, 380, 253, 26); g.clip(); g.drawImage(ph, 300, y0 + 110, 380, 253); g.restore();
     g.globalAlpha = 1;
   }
+  if (s.reply) {
+    g.font = `500 36px ${FONT_ZH}`;
+    const lines: string[] = []; let ln = '';
+    for (const ch of s.reply) { if (g.measureText(ln + ch).width > 470) { lines.push(ln); ln = ch; } else ln += ch; }
+    lines.push(ln);
+    const by = 640, bh = 40 + lines.length * 50;
+    g.fillStyle = 'rgba(255,255,255,0.12)'; roundRect(g, 40, by, 520, bh, 30); g.fill();
+    g.fillStyle = '#f4ecff'; lines.forEach((l, i) => g.fillText(l, 70, by + 44 + i * 50));
+    if (!s.done) { const w = g.measureText(lines[lines.length - 1]).width; g.fillStyle = '#c08bff'; g.fillRect(74 + w, by + 24 + (lines.length - 1) * 50, 4, 38); }
+  }
   // input bar
   const iy = H - 130;
   g.fillStyle = 'rgba(255,255,255,0.07)'; roundRect(g, 34, iy, W - 68, 92, 46); g.fill();
@@ -72,7 +83,7 @@ function drawPanel(s: PanelState) {
   return c;
 }
 
-const Panel: React.FC<{state: PanelState; position: [number, number, number]; rotY: number; opacity: number}> = ({state, position, rotY, opacity}) => {
+export const Panel: React.FC<{state: PanelState; position: [number, number, number]; rotY: number; opacity: number}> = ({state, position, rotY, opacity}) => {
   const key = JSON.stringify(state);
   const tex = useMemo(() => toTex(drawPanel(state)), [key]);
   return (
