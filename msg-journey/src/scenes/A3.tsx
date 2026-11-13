@@ -10,7 +10,7 @@ import {ev} from '../timeline';
 export const N_PKT = 2143;
 const GX = 47, GY = 46; // 2,162 slots, 2,143 used
 const SP = 0.16;
-const WALL = new THREE.Vector3(3.2, 1.8, -2);
+const WALL = new THREE.Vector3(3.2, 0.9, -2);
 export const A3_TEXT = ev('A3', 1.2, false), A3_WALL = ev('A3', 2.3, false), A3_DONE = A3_WALL + 4.6;
 
 // packet = gold body + white header strip (address / sequence number)
@@ -70,7 +70,7 @@ export const A3Scene: React.FC<{t: number; dur: number}> = ({t}) => {
         <mesh position={[0, 0.48, 0.305]}><planeGeometry args={[2.0, 0.32]} /><meshBasicMaterial map={hdr} toneMapped={false} /></mesh>
         <Label3D text="在吗 · 6 B" size={60} height={0.36} color="#e9fdff" position={[0, -0.12, 0.31]} emissive={1.4} />
       </group>
-      <Label3D text="1 个包" sub="1 PACKET" size={56} height={0.62} color={C.cyan} position={[-3.9, -1.2, 0.5]} opacity={smooth(ramp(t, A3_TEXT + 0.4, A3_TEXT + 0.9))} emissive={1.3} />
+      <Label3D text="1 个包" sub="1 PACKET" size={56} height={0.62} color={C.cyan} position={[-3.9, 2.0, 0.5]} opacity={smooth(ramp(t, A3_TEXT + 0.4, A3_TEXT + 0.9))} emissive={1.3} />
       <pointLight position={[0, 6, 6]} intensity={120} color="#fff0d8" />
       <ambientLight intensity={0.45} />
     </>

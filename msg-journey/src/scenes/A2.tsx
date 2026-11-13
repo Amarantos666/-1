@@ -118,9 +118,9 @@ export const A2Scene: React.FC<{t: number; dur: number}> = ({t}) => {
         <planeGeometry args={[PW * PSIZE + 0.18, PH * PSIZE + 0.18]} />
         <meshBasicMaterial color={new THREE.Color(C.gold).multiplyScalar(1.6)} toneMapped={false} transparent opacity={1 - ramp(t, A2_SHATTER, A2_SHATTER + 0.4)} />
       </mesh>
-      {t < 1.4 ? <Label3D text="在吗" color={C.cyan} size={120} height={1.2} position={[-4.6, 0.2, 2]} emissive={1.6} opacity={1 - ramp(t, 1.0, 1.3)} /> : null}
+      {t < 1.4 ? <Label3D text="在吗" color={C.cyan} size={120} height={1.2} position={[-3.6, 0.6, 2]} emissive={1.6} opacity={1 - ramp(t, 1.0, 1.3)} /> : null}
       {HEX.map((h, i) => (
-        <ByteCube key={i} i={i} label={h} t={t} enc={enc} scale={0.62 * split + 0.001} position={[lerp(-4.6, -6.6 + i * 0.78, split), lerp(0.2, 0.2, split) + lerp(0, 2.2, easeInOut(ramp(t, A2_SHATTER, A2_SLAM))) * (1 - easeInOut(ramp(t, A2_COMPRESS, A2_COMPRESS + 2))) + Math.sin(t * 1.5 + i) * 0.05, 2]} />
+        <ByteCube key={i} i={i} label={h} t={t} enc={enc} scale={0.62 * split + 0.001} position={[lerp(-4.6, -5.6 + i * 0.78, split), lerp(0.2, 0.2, split) + lerp(0, 2.2, easeInOut(ramp(t, A2_SHATTER, A2_SLAM))) * (1 - easeInOut(ramp(t, A2_COMPRESS, A2_COMPRESS + 2))) + Math.sin(t * 1.5 + i) * 0.05, 2]} />
       ))}
       <pointLight position={[10, 18, 8]} intensity={900} color="#ffd9a0" distance={80} />
       <pointLight position={[-8, 4, 10]} intensity={200} color={C.cyan} distance={50} />
