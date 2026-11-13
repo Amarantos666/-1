@@ -13,8 +13,8 @@ const rows = SHOTS.map((s) => `| ${s.id} | ${tc(s.from, false)} | ${tc(s.to, fal
 fs.writeFileSync('SHOTLIST.md', `# 分镜时间码表\n\n镜头边界已对齐 BGM（0.9× 变速后）重拍。\n\n| 镜头 | 入点 | 出点 | 时长 | 章节 | 字幕 | 注释条 |\n|---|---|---|---|---|---|---|\n${rows.join('\n')}\n`);
 // Motion-blur windows (fast motion): every shot boundary +-0.4 s plus fast-moving moments.
 const at = (id: string, a: number, b: number): [number, number] => { const x = SHOTS.find((q) => q.id === id)!; return [x.from + a, Math.min(x.to, x.from + b)]; };
-const win: [number, number][] = SHOTS.slice(1).map((x) => [x.from - 0.45, x.from + 0.45]);
-win.push(at('O1', 8.6, 12.5), at('A2', 2.2, 7.0), at('A4', 4.5, 9), at('A5', 0, 3.4), at('BR', 0, 6), at('B3', 0, 10), at('B5', 7.0, 12.4), at('F1', 2.3, 5.2), at('C1', 7.5, 10.8));
+// Reduced plan (render-time budget): sub-frame motion blur only on the four fastest moments.
+const win: [number, number][] = [at('O1', 8.6, 12.5), at('A3', 2.3, 6.0), at('B3', 0, 10), at('F1', 2.3, 5.2)];
 win.sort((a, b) => a[0] - b[0]);
 const merged: [number, number][] = [];
 for (const w of win) { const fr: [number, number] = [Math.max(0, Math.floor(w[0] * 30)), Math.min(6840, Math.ceil(w[1] * 30))]; const l = merged[merged.length - 1]; if (l && fr[0] <= l[1] + 15) l[1] = Math.max(l[1], fr[1]); else merged.push(fr); }
