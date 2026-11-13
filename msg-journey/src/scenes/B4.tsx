@@ -91,8 +91,8 @@ export const B4Scene: React.FC<{t: number; dur: number}> = ({t}) => {
   mesh.instanceMatrix.needsUpdate = true; if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
   const ourY = (OURS - (ROWS - 1) / 2) * (CUBE + GAP) * 1.15;
   const intro = easeInOut(ramp(t, 0, 3.5));
-  const camPos: [number, number, number] = [lerp(-15, -10.5, intro) + Math.sin(t * 0.2) * 0.4, lerp(7, 2.6, intro), lerp(17, 12.5, intro)];
-  const camTarget: [number, number, number] = [lerp(-2, -3.4, intro), lerp(0, 0.2, intro), 0];
+  const camPos: [number, number, number] = [lerp(-15, -12, intro) + Math.sin(t * 0.2) * 0.4, lerp(7, 1.6, intro), lerp(17, 16.5, intro)];
+  const camTarget: [number, number, number] = [lerp(-2, -3.6, intro), lerp(0, 1.0, intro), 0];
   const h = ROWS * (CUBE + GAP) * 1.15 + 1;
   const ourLen = Math.min(MAXLEN, 14 + Math.max(0, Math.floor((t - B4_IN) / STEP)));
   const ourLabelX = headX - 0.3 - ourLen * (CUBE + GAP) - 0.6 - (1 - easeOut(ramp(t, B4_IN - 1.2, B4_IN))) * 12;

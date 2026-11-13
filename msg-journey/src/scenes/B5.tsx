@@ -81,7 +81,7 @@ export const B5Scene: React.FC<{t: number; dur: number}> = ({t}) => {
     o.position.set(lerp(a.x, b.x, p), lerp(a.y, b.y, p) + lift, lerp(a.z, b.z, p));
     const s = lerp(CELL * (1 - 0.06 * gridIn), 0.44, p);
     o.scale.set(s, s, 1);
-    o.rotation.set(0, lerp(0, -0.42, p), Math.sin(p * Math.PI) * (hash1(k * 3) - 0.5) * 1.5);
+    o.rotation.set(0, lerp(0, 0.95, p), Math.sin(p * Math.PI) * (hash1(k * 3) - 0.5) * 1.5);
     o.updateMatrix(); mesh.setMatrixAt(k, o.matrix);
     glowAttr.setX(k, p > 0 && p < 1 ? 1 : num * (0.5 + 0.5 * Math.sin(t * 6 + k * 0.7)));
   }
@@ -96,8 +96,8 @@ export const B5Scene: React.FC<{t: number; dur: number}> = ({t}) => {
   });
   const intro = easeInOut(ramp(t, 0, 3));
   const late = easeInOut(ramp(t, B5_FLY, B5_FLY_END + 1.5));
-  const camPos: [number, number, number] = [lerp(lerp(-1, -2.6, intro), -9.5, late), lerp(lerp(2.2, 2.0, intro), 3.4, late), lerp(lerp(13, 13.5, intro), 10.5, late)];
-  const camTarget: [number, number, number] = [lerp(lerp(-1, -0.5, intro), 0.5, late), lerp(1.2, -0.2, late), lerp(0, -8, late)];
+  const camPos: [number, number, number] = [lerp(lerp(-1, -2.6, intro), 8.7, late), lerp(lerp(2.2, 2.0, intro), 4.5, late), lerp(lerp(13, 13.5, intro), 6.8, late)];
+  const camTarget: [number, number, number] = [lerp(lerp(-1, -0.5, intro), -1.9, late), lerp(1.2, 0.3, late), lerp(0, -5.2, late)];
   return (
     <>
       <CameraRig pos={camPos} target={camTarget} fov={40} />
