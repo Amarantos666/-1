@@ -11,8 +11,8 @@ export const C1_ROWS = [ev('C1', 0.6, false), ev('C1', 2.4, false), ev('C1', 4.3
 
 export const C1Scene: React.FC<{t: number; dur: number}> = ({t}) => {
   const conv = easeInOut(ramp(t, C1_GOLD - 2.2, C1_GOLD));
-  const L = useMemo(() => new THREE.CatmullRomCurve3([new THREE.Vector3(-16, -1, -6), new THREE.Vector3(-8, 0.5, -3), new THREE.Vector3(-3, 1.2, -1), new THREE.Vector3(0, 1.4, 0)]), []);
-  const R = useMemo(() => new THREE.CatmullRomCurve3([new THREE.Vector3(16, -1, -6), new THREE.Vector3(8, 0.5, -3), new THREE.Vector3(3, 1.2, -1), new THREE.Vector3(0, 1.4, 0)]), []);
+  const L = useMemo(() => new THREE.CatmullRomCurve3([new THREE.Vector3(-16, -1, -6), new THREE.Vector3(-8, 0.5, -3), new THREE.Vector3(-3, 2.2, -1), new THREE.Vector3(0, 2.7, 0)]), []);
+  const R = useMemo(() => new THREE.CatmullRomCurve3([new THREE.Vector3(16, -1, -6), new THREE.Vector3(8, 0.5, -3), new THREE.Vector3(3, 2.2, -1), new THREE.Vector3(0, 2.7, 0)]), []);
   const head = lerp(0.25, 1, conv);
   const hit = decay(t, C1_GOLD, 1.6);
   const after = t >= C1_GOLD;
@@ -29,7 +29,7 @@ export const C1Scene: React.FC<{t: number; dur: number}> = ({t}) => {
       <Streak curve={L} head={head} length={0.6} color="#2E9BFF" count={200} size={0.55} />
       <Streak curve={R} head={head} length={0.6} color="#A05CFF" count={200} size={0.55} />
       {!after ? <><Orb position={L.getPointAt(head).toArray() as [number, number, number]} color={C.cyan} r={0.12} intensity={5} glow={10} /><Orb position={R.getPointAt(head).toArray() as [number, number, number]} color="#c08bff" r={0.12} intensity={5} glow={10} /></> : null}
-      {after ? <><Orb position={[0, 1.4, 0]} color={C.goldHot} r={0.18 + hit * 0.2} intensity={6} glow={14 + hit * 20} /><Glow position={[0, 1.4, 0]} color="#ffffff" size={2 + hit * 30} opacity={0.5 + hit * 0.5} /></> : null}
+      {after ? <><Orb position={[0, 2.7, 0]} color={C.goldHot} r={0.18 + hit * 0.2} intensity={6} glow={14 + hit * 20} /><Glow position={[0, 2.7, 0]} color="#ffffff" size={2 + hit * 18} opacity={0.5 + hit * 0.5} /></> : null}
     </>
   );
 };
@@ -68,7 +68,7 @@ export const C1Html: React.FC<{t: number; dur: number}> = ({t, dur}) => {
         </div>
       </div>
       {gold > 0 ? (
-        <div style={{position: 'absolute', left: 0, right: 0, top: 560, textAlign: 'center', opacity: gold, transform: `scale(${lerp(1.25, 1, easeOut(gold))})`, filter: `blur(${(1 - gold) * 5}px)`}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 600, textAlign: 'center', opacity: gold, transform: `scale(${lerp(1.25, 1, easeOut(gold))})`, filter: `blur(${(1 - gold) * 5}px)`}}>
           <div style={{fontFamily: FONT_ZH_SERIF, fontWeight: 900, fontSize: 62, color: '#fff6dc', textShadow: '0 0 30px rgba(255,194,74,0.8)', whiteSpace: 'nowrap'}}>同样是按下回车——一条被送达，一条被读懂。</div>
           <div style={{fontFamily: FONT_ZH_SERIF, fontWeight: 900, fontSize: 62, color: '#cfd6e6', marginTop: 10, opacity: smooth(ramp(t, C1_GOLD + 1.2, C1_GOLD + 1.8)), textShadow: '0 0 24px rgba(150,170,210,0.6)'}}>然后，被忘记。</div>
           <div style={{fontFamily: FONT_EN, fontWeight: 500, fontSize: 28, color: 'rgba(240,236,255,0.85)', marginTop: 18}}>Same Enter key — one delivered, one understood. <span style={{opacity: smooth(ramp(t, C1_GOLD + 1.2, C1_GOLD + 1.8))}}>And then, forgotten.</span></div>
