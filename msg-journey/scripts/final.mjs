@@ -33,7 +33,7 @@ if (args.only !== 'assemble') {
     const k = blur ? 4 : 1;
     const raw = blur ? `${DIR}/raw_${i}.mp4` : out;
     const inputProps = {offset: 0, bgm: true, noAudio: true, q: blur ? Q : `${Q},fxaa`};
-    await renderMedia({serveUrl, composition: comp, inputProps, outputLocation: raw, codec: 'h264', crf: 12, x264Preset: 'medium',
+    await renderMedia({serveUrl, composition: {...comp, props: inputProps}, inputProps, outputLocation: raw, codec: 'h264', crf: 12, x264Preset: 'medium',
       frameRange: [s.f0 * k, s.f1 * k - 1], concurrency: CONC, muted: true, imageFormat: 'jpeg', jpegQuality: 96, timeoutInMilliseconds: 900000, ...browser});
     if (blur) {
       ff('-i', raw, '-vf', "tmix=frames=4:weights='1 1 1 1',select='eq(mod(n\\,4)\\,3)',setpts=N/30/TB", '-r', '30', '-c:v', 'libx264', '-crf', '12', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-video_track_timescale', '90000', out);
@@ -45,19 +45,19 @@ if (args.only !== 'assemble') {
   for (const [name, bgm] of [['mix', true], ['sfx', false]]) {
     const out = `${DIR}/${name}.wav`;
     if (fs.existsSync(out)) continue;
-    await renderMedia({serveUrl, composition: comps.Main, inputProps: {offset: 0, bgm}, outputLocation: out, codec: 'wav', ...browser});
+    await renderMedia({serveUrl, composition: {...comps.Main, props: {offset: 0, bgm}}, inputProps: {offset: 0, bgm}, outputLocation: out, codec: 'wav', ...browser});
   }
 }
 
 // assemble: concat video, loudness-normalise the mix to -14 LUFS (SFX-only stem gets the same gain)
 fs.writeFileSync(`${DIR}/list.txt`, segs.map((_, i) => `file 'seg_${String(i).padStart(2, '0')}.mp4'`).join('\n'));
-ff('-f', 'concat', '-safe', '0', '-i', `${DIR}/list.txt`, '-c:v', 'libx264', '-crf', '18', '-maxrate', '25M', '-bufsize', '50M', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-r', '30', `${DIR}/video.mp4`);
+if (!fs.existsSync(`${DIR}/video.mp4`)) ff('-f', 'concat', '-safe', '0', '-i', `${DIR}/list.txt`, '-c:v', 'libx264', '-crf', '18', '-maxrate', '25M', '-bufsize', '50M', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-r', '30', `${DIR}/video.mp4`);
 const statsRaw = execFileSync('bash', ['-c', `ffmpeg -hide_banner -i ${DIR}/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | tail -12`]).toString();
 const st = JSON.parse(statsRaw.slice(statsRaw.indexOf('{')));
 const gain = -14 - parseFloat(st.input_i);
 console.log('mix loudness', st.input_i, 'LUFS -> gain', gain.toFixed(2), 'dB');
-ff('-i', `${DIR}/mix.wav`, '-af', `volume=${gain.toFixed(2)}dB,alimiter=limit=0.84`, '-ar', '48000', `${DIR}/mix_n.wav`);
-ff('-i', `${DIR}/sfx.wav`, '-af', `volume=${gain.toFixed(2)}dB,alimiter=limit=0.84`, '-ar', '48000', `${DIR}/sfx_n.wav`);
+ff('-i', `${DIR}/mix.wav`, '-af', `volume=${gain.toFixed(2)}dB,alimiter=limit=0.84:level=disabled`, '-ar', '48000', `${DIR}/mix_n.wav`);
+ff('-i', `${DIR}/sfx.wav`, '-af', `volume=${gain.toFixed(2)}dB,alimiter=limit=0.84:level=disabled`, '-ar', '48000', `${DIR}/sfx_n.wav`);
 for (const [name, a] of [['final.mp4', 'mix_n.wav'], ['final_nobgm.mp4', 'sfx_n.wav']]) {
   ff('-i', `${DIR}/video.mp4`, '-i', `${DIR}/${a}`, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-shortest', '-movflags', '+faststart', name);
 }
