@@ -36,7 +36,7 @@ if (args.only !== 'assemble') {
     await renderMedia({serveUrl, composition: comp, inputProps, outputLocation: raw, codec: 'h264', crf: 12, x264Preset: 'medium',
       frameRange: [s.f0 * k, s.f1 * k - 1], concurrency: CONC, muted: true, imageFormat: 'jpeg', jpegQuality: 96, timeoutInMilliseconds: 900000, ...browser});
     if (blur) {
-      ff('-i', raw, '-vf', "tmix=frames=4:weights='1 1 1 1',select='eq(mod(n\\,4)\\,3)',setpts=N/30/TB", '-r', '30', '-c:v', 'libx264', '-crf', '12', '-preset', 'medium', '-pix_fmt', 'yuv420p', out);
+      ff('-i', raw, '-vf', "tmix=frames=4:weights='1 1 1 1',select='eq(mod(n\\,4)\\,3)',setpts=N/30/TB", '-r', '30', '-c:v', 'libx264', '-crf', '12', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-video_track_timescale', '90000', out);
       fs.rmSync(raw);
     }
     console.log(`seg ${i}/${segs.length} ${blur ? 'blur' : 'std '} frames ${s.f0}-${s.f1} in ${((Date.now() - t0) / 1000).toFixed(0)}s  ${new Date().toTimeString().slice(0, 8)}`);
@@ -51,7 +51,7 @@ if (args.only !== 'assemble') {
 
 // assemble: concat video, loudness-normalise the mix to -14 LUFS (SFX-only stem gets the same gain)
 fs.writeFileSync(`${DIR}/list.txt`, segs.map((_, i) => `file 'seg_${String(i).padStart(2, '0')}.mp4'`).join('\n'));
-ff('-f', 'concat', '-safe', '0', '-i', `${DIR}/list.txt`, '-c:v', 'libx264', '-crf', '16', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-r', '30', `${DIR}/video.mp4`);
+ff('-f', 'concat', '-safe', '0', '-i', `${DIR}/list.txt`, '-c:v', 'libx264', '-crf', '18', '-maxrate', '25M', '-bufsize', '50M', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-r', '30', `${DIR}/video.mp4`);
 const statsRaw = execFileSync('bash', ['-c', `ffmpeg -hide_banner -i ${DIR}/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | tail -12`]).toString();
 const st = JSON.parse(statsRaw.slice(statsRaw.indexOf('{')));
 const gain = -14 - parseFloat(st.input_i);
