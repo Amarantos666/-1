@@ -16,8 +16,9 @@ const crystalHome = (): [number, number, number] => { const p = slotPos(OUR_SLOT
 
 export function b6Cam(t: number) {
   const a = easeInOut(ramp(t, B6_FORM + 1.6, B6_LAND));
-  const pos = new THREE.Vector3(lerp(Math.sin(t * 0.25) * 1.2, 4.2, a), lerp(3.6, 2.4, a), lerp(6.5, 7.0, a));
-  const tgt = new THREE.Vector3(lerp(0, 0, a), lerp(STACK.y + 0.4, BOARD_Y + 0.9, a), lerp(STACK.z, 0.8, a));
+  const up = smooth(ramp(t, B6_FORM - 0.6, B6_FORM + 0.8));
+  const pos = new THREE.Vector3(lerp(Math.sin(t * 0.25) * 1.2, 4.2, a), lerp(lerp(3.6, 5.0, up), 2.4, a), lerp(lerp(6.5, 7.5, up), 7.0, a));
+  const tgt = new THREE.Vector3(lerp(0, 0, a), lerp(lerp(STACK.y + 0.4, stackLayerY(LAYERS - 1) + 1.2, up), BOARD_Y + 0.9, a), lerp(STACK.z, 0.8, a));
   return {pos, tgt};
 }
 
