@@ -5,10 +5,13 @@ import {mulberry32} from '../lib/math';
 import {glowTexture, labelTexture, LabelOpts} from '../lib/canvas';
 
 // ---------- Camera ----------
+// Sub-pixel jitter (set by Main when rendering 4 sub-frames per output frame).
+export const JITTER = {x: 0, y: 0};
 export const CameraRig: React.FC<{pos: [number, number, number]; target: [number, number, number]; fov?: number; roll?: number}> = ({pos, target, fov = 40, roll = 0}) => {
-  const {camera} = useThree();
+  const {camera, size} = useThree();
   useLayoutEffect(() => {
     const cam = camera as THREE.PerspectiveCamera;
+    if (JITTER.x || JITTER.y) cam.setViewOffset(size.width, size.height, JITTER.x, JITTER.y, size.width, size.height); else cam.clearViewOffset();
     cam.position.set(...pos);
     cam.up.set(Math.sin(roll), Math.cos(roll), 0);
     cam.lookAt(...target);

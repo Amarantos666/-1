@@ -7,6 +7,7 @@ import {sceneFor} from './scenes/registry';
 import {shotAt} from './timeline';
 import {C} from './theme';
 import {useJson} from './lib/data';
+import {JITTER} from './three/common';
 import {AudioTrack} from './AudioTrack';
 
 export const Main: React.FC<{offset?: number; bgm?: boolean; noPost?: boolean; noAudio?: boolean; noHtml?: boolean; q?: string}> = ({offset = 0, bgm = true, noPost = false, noAudio = false, noHtml = false, q = ''}) => {
@@ -17,6 +18,9 @@ export const Main: React.FC<{offset?: number; bgm?: boolean; noPost?: boolean; n
   const ready = g1 !== null && g2 !== null;
   const {fps, width, height} = useVideoConfig();
   const t = frame / fps + offset;
+  // 4 sub-frames per 30 fps frame at 120 fps: rotated-grid jitter for anti-aliasing
+  const J = [[0.125, 0.375], [-0.375, 0.125], [0.375, -0.125], [-0.125, -0.375]];
+  if (fps === 120) { JITTER.x = J[frame % 4][0]; JITTER.y = J[frame % 4][1]; } else { JITTER.x = 0; JITTER.y = 0; }
   const shot = shotAt(t);
   const lt = t - shot.from, dur = shot.to - shot.from;
   const S = sceneFor(shot.id);

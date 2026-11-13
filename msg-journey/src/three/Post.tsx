@@ -1,6 +1,6 @@
 import React, {forwardRef, useMemo} from 'react';
 import * as THREE from 'three';
-import {EffectComposer, Bloom, DepthOfField, Vignette, ChromaticAberration, HueSaturation, BrightnessContrast} from '@react-three/postprocessing';
+import {EffectComposer, Bloom, DepthOfField, Vignette, ChromaticAberration, HueSaturation, BrightnessContrast, FXAA} from '@react-three/postprocessing';
 import {Effect, BlendFunction} from 'postprocessing';
 
 // Deterministic film grain: seed comes from the frame number, so every frame re-renders identically.
@@ -43,7 +43,8 @@ export const Post: React.FC<PostProps> = ({frame, bloom = 1.2, bloomThreshold = 
   ab.set(aberration * 0.006, aberration * 0.004);
   return (
     <EffectComposer multisampling={q.includes('m0') ? 0 : 4} frameBufferType={q.includes('ub') ? THREE.UnsignedByteType : THREE.HalfFloatType}>
-      {dof && !q.includes('nodof') ? <DepthOfField worldFocusDistance={dof.distance} worldFocusRange={dof.range} bokehScale={dof.bokeh} resolutionScale={0.5} /> : <></>}
+      {dof && !q.includes('nodof') ? <DepthOfField worldFocusDistance={dof.distance} worldFocusRange={dof.range} bokehScale={dof.bokeh} resolutionScale={q.includes('dofq') ? 0.25 : 0.5} /> : <></>}
+      {q.includes('fxaa') ? <FXAA /> : <></>}
       {q.includes('nobloom') ? <></> : <Bloom intensity={bloom} luminanceThreshold={bloomThreshold} luminanceSmoothing={0.25} mipmapBlur radius={0.75} />}
       <ChromaticAberration offset={ab} radialModulation={false} modulationOffset={0} />
       <HueSaturation saturation={saturation} hue={0} />

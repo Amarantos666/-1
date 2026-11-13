@@ -1,0 +1,129 @@
+1
+00:00:01,200 --> 00:00:07,600
+你打下“在吗”，附上一张照片，按下回车
+You type "hi", attach a photo, hit Enter.
+
+2
+00:00:08,400 --> 00:00:12,163
+对面是朋友，还是 AI，命运完全不同
+Friend or AI — two completely different journeys.
+
+3
+00:00:22,157 --> 00:00:28,719
+1858 年，98 个词的电报跨大西洋，发了近 16 小时
+1858: a 98-word telegram took ~16 hours to cross the Atlantic.
+
+4
+00:00:29,139 --> 00:00:36,239
+“在吗”只有 6 个字节，一张照片约 3 MB——大了几十万倍
+"Hi" is 6 bytes; a photo ~3 MB — hundreds of thousands of times bigger.
+
+5
+00:00:36,439 --> 00:00:40,639
+所以照片往往会先被压缩
+So photos are often compressed first.
+
+6
+00:00:43,427 --> 00:00:52,357
+一句话，一个包就装下；一张照片，要拆成两千多个包
+One packet for the text; 2,000+ for the photo.
+
+7
+00:00:52,877 --> 00:00:59,439
+变成电磁波，再变成光，在玻璃丝里一路反射
+Radio waves, then light, through glass.
+
+8
+00:01:00,159 --> 00:01:06,959
+它们可能各走各的路，跨过太平洋
+They may take different routes across the Pacific —
+
+9
+00:01:07,159 --> 00:01:14,159
+约 1 万公里，只要约 50 毫秒
+~10,000 km in ~50 ms.
+
+10
+00:01:16,515 --> 00:01:21,315
+到了再按编号拼回去，丢了的补发
+Reassembled by number, lost ones resent;
+
+11
+00:01:21,515 --> 00:01:25,469
+对方先看到缩略图，再看到原图
+a thumbnail first, then the full photo.
+
+12
+00:01:26,089 --> 00:01:30,182
+但如果收件人是 AI 呢？
+But what if the recipient is an AI?
+
+13
+00:01:33,148 --> 00:01:38,248
+你以为只发了两个字和一张图？
+Think you sent two characters and a photo?
+
+14
+00:01:38,648 --> 00:01:46,248
+其实每一次，整段对话都会被重新发过去
+Every time, the whole conversation is sent again.
+
+15
+00:01:47,258 --> 00:01:53,820
+先验身份、排队，再过一遍安全检查
+Authentication, rate limits, a safety check.
+
+16
+00:01:54,440 --> 00:02:03,271
+然后进入一座装着上万块 AI 芯片的机房
+Into a hall of tens of thousands of AI chips.
+
+17
+00:02:03,891 --> 00:02:14,991
+你的消息，正和几十个陌生人的消息拼成一批，同时计算
+Batched with dozens of strangers', computed together.
+
+18
+00:02:15,610 --> 00:02:21,610
+文字被切成 token：“在吗”只有两三个
+Text becomes tokens — "hi" is just two or three.
+
+19
+00:02:22,010 --> 00:02:28,810
+照片被切成 16×16 的小方块，一张图就是几百个
+A photo becomes 16×16 patches — hundreds of them.
+
+20
+00:02:29,797 --> 00:02:40,997
+它先一口气读完全部内容，把理解存成“记忆”
+It reads everything at once, storing its understanding as memory.
+
+21
+00:02:41,639 --> 00:02:47,839
+然后一次只写一个字，每个字都从几万个候选里挑
+One token at a time, from tens of thousands of candidates —
+
+22
+00:02:48,239 --> 00:02:54,839
+带点随机，所以同一个问题，每次回答都可能不同
+with randomness, so answers vary.
+
+23
+00:02:56,004 --> 00:03:08,804
+写出一个就发回一个——所以回复是一个字一个字冒出来的
+Each token streams back instantly — that's why replies appear word by word.
+
+24
+00:03:10,614 --> 00:03:17,014
+说完的那一刻，这段“记忆”就被清空，或者只短暂缓存一会儿
+The moment it finishes, the memory is cleared — or cached only briefly.
+
+25
+00:03:17,414 --> 00:03:24,214
+下一次你发消息，它会把你们的整段对话，连同那张照片，再从头读一遍
+Next time, it re-reads your whole conversation — photo included — from the top.
+
+26
+00:03:34,600 --> 00:03:39,200
+同样是按下回车——一条被送达，一条被读懂。然后，被忘记。
+Same Enter key — one delivered, one understood. And then, forgotten.
