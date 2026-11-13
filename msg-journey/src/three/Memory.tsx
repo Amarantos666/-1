@@ -68,7 +68,7 @@ export const Crystal: React.FC<CrystalProps> = ({position, scale = 1, colorA = '
   const glowCol = useMemo(() => new THREE.Color(colorA).lerp(new THREE.Color(colorB), 0.3).getStyle(), [colorA, colorB]);
   return (
     <group position={position} scale={scale} rotation={[0, spin, 0]}>
-      <mesh geometry={geo}><meshBasicMaterial vertexColors toneMapped={false} side={THREE.DoubleSide} /></mesh>
+      <mesh geometry={geo} frustumCulled={false}><meshBasicMaterial vertexColors toneMapped={false} side={THREE.DoubleSide} /></mesh>
       <Glow color={grey > 0.5 ? '#8f9bb0' : glowCol} size={4.2} opacity={glow * (1 - shatter) * (1 - grey * 0.6)} />
     </group>
   );

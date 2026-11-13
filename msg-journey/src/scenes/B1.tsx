@@ -152,10 +152,10 @@ export const B1Scene: React.FC<{t: number; dur: number}> = ({t}) => {
       <Dust t={t} count={600} spread={[30, 40, 20]} center={[0, -6, -3]} color="#d6a8ff" opacity={0.4} />
       {/* scroll */}
       <group position={[0, top, 0]} scale={[open, 1, 1]}>
-        <mesh geometry={g}>
+        <mesh geometry={g} frustumCulled={false}>
           <meshBasicMaterial color="#1a0b33" side={THREE.BackSide} />
         </mesh>
-        <mesh geometry={g}>
+        <mesh geometry={g} frustumCulled={false}>
           <meshBasicMaterial map={tex} side={THREE.FrontSide} toneMapped={false} color={new THREE.Color(1.25, 1.2, 1.3)} transparent opacity={smooth(ramp(t, B1_UNROLL - 0.5, B1_UNROLL))} />
         </mesh>
         {/* glowing side rails */}
