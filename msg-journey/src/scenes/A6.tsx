@@ -39,7 +39,7 @@ export const A6Scene: React.FC<{t: number; dur: number}> = ({t, dur}) => {
     const i = k % GX, j = Math.floor(k / GX);
     const tx = CTR.x - PW / 2 + (i + 0.5) * CELL, ty = CTR.y + PH / 2 - (j + 0.5) * CH;
     // arrivals come in shuffled (different routes), each lands on its numbered slot
-    const arr = 0.2 + hash1(k * 3.7) * 2.6;
+    const arr = -0.5 + hash1(k * 3.7) * 3.2;
     const resend = k === LOST;
     const s0 = resend ? A6_RESEND : arr;
     const p = easeInOut(ramp(t, s0, s0 + 0.7));
