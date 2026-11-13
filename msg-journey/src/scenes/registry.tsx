@@ -6,7 +6,7 @@ import {B1Scene, B1Html, B1_XRAY, b1Cam} from './B1';
 import {B4Scene, B4Html} from './B4';
 import {B5Scene, B5Html} from './B5';
 import {B6Scene, B6Html, B6_FLASH, B6_FLASH_END, B6_LAND, b6Cam} from './B6';
-import {F1Scene, F1_SHATTER, f1Cam} from './F1';
+import {F1Scene, F1_SHATTER, F1_NEXT, f1Cam} from './F1';
 import {O2Scene, O2Html, O2_SPLIT, CardScene, CardHtml} from './Title';
 import {A1Scene, A1Html, A1_NOW} from './A1';
 import {A3Scene, A3Html} from './A3';
@@ -18,7 +18,7 @@ import {B7Scene, B7Html} from './B7';
 import {B8Scene, B8Html} from './B8';
 import {C1Scene, C1Html, C1_GOLD, R1Scene, R1Html} from './Outro';
 import {A2Scene, A2Html, A2_SLAM, A2_ENCRYPT} from './A2';
-import {decay, ramp} from '../lib/math';
+import {decay, ramp, smooth} from '../lib/math';
 import {CameraRig, Stars, GridFloor} from '../three/common';
 import {C} from '../theme';
 
@@ -53,7 +53,7 @@ SCENES.B6 = {three: B6Scene, html: B6Html, post: (t) => {
 }};
 SCENES.F1 = {three: F1Scene, post: (t) => {
   const c = f1Cam(t);
-  return {bloom: 0.8 + decay(t, F1_SHATTER, 3) * 1.2, bloomThreshold: 0.6, dof: {distance: c.pos.distanceTo(c.tgt), range: 4, bokeh: 2.2}, saturation: -0.75 * Math.min(1, t / 1.8), vignette: 0.75, aberration: decay(t, F1_SHATTER, 6) * 0.5};
+  return {bloom: 0.8 + decay(t, F1_SHATTER, 3) * 1.2, bloomThreshold: 0.6, dof: {distance: c.pos.distanceTo(c.tgt), range: 4, bokeh: 2.2}, saturation: -0.75 * Math.min(1, t / 1.8) + 0.4 * smooth(ramp(t, F1_NEXT, F1_NEXT + 1.2)), vignette: 0.75, aberration: decay(t, F1_SHATTER, 6) * 0.5};
 }};
 SCENES.O2 = {three: O2Scene, html: O2Html, post: (t) => ({bloom: 1.0 + decay(t, O2_SPLIT, 4) * 0.8, bloomThreshold: 0.6, dof: {distance: 10.5, range: 8, bokeh: 1.4}, aberration: decay(t, O2_SPLIT, 8) * 0.6})};
 const cardA: React.FC<{t: number; dur: number}> = (p) => <CardScene {...p} color={C.cyan} />;

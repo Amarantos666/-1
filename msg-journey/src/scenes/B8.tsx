@@ -13,7 +13,7 @@ const TRAVEL = 0.9;
 export const tokenSend = (k: number) => B8_START + k * B8_GAP;
 export const tokenArrive = (k: number) => tokenSend(k) + TRAVEL;
 
-const GPU = new THREE.Vector3(9, 1.2, -16), SCREEN = new THREE.Vector3(-2.6, 1.3, 0.2);
+const GPU = new THREE.Vector3(9, 1.2, -16), SCREEN = new THREE.Vector3(-1.5, 1.3, 0.2);
 
 export const B8Scene: React.FC<{t: number; dur: number}> = ({t, dur}) => {
   const curve = useMemo(() => new THREE.CatmullRomCurve3([GPU.clone(), new THREE.Vector3(6, 3.2, -9), new THREE.Vector3(2, 2.4, -3), SCREEN.clone().add(new THREE.Vector3(1.4, 0.2, 0.2))]), []);
@@ -21,8 +21,8 @@ export const B8Scene: React.FC<{t: number; dur: number}> = ({t, dur}) => {
   const done = arrived === REPLY.length;
   const reply = REPLY.slice(0, arrived).join('');
   const back = easeInOut(ramp(t, dur - 3.2, dur));
-  const cam = new THREE.Vector3(lerp(0.6, 6.8, back), lerp(1.8, 2.0, back), lerp(8.2, -9.5, back));
-  const tgt = new THREE.Vector3(lerp(0.4, GPU.x, back), lerp(1.4, GPU.y, back), lerp(-3, GPU.z, back));
+  const cam = new THREE.Vector3(lerp(1.2, 6.8, back), lerp(1.8, 2.0, back), lerp(9.0, -9.5, back));
+  const tgt = new THREE.Vector3(lerp(1.4, GPU.x, back), lerp(1.4, GPU.y, back), lerp(-3, GPU.z, back));
   const v = new THREE.Vector3();
   return (
     <>

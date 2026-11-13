@@ -39,7 +39,7 @@ export const F1Scene: React.FC<{t: number; dur: number}> = ({t}) => {
       <Burst t={t} at={[home[0], BOARD_Y + 0.7, home[2]]} />
       <Glow position={[home[0], BOARD_Y + 0.7, home[2]]} color="#c9d2e3" size={3 * pop + 0.01} opacity={pop} />
       {/* the next stranger's request slides into the freed slot */}
-      {t > F1_NEXT ? <Crystal position={[lerp(home[0] + 7, home[0], next), BOARD_Y + 0.7 + Math.sin(next * Math.PI) * 0.8, home[2]]} scale={0.62} spin={t * 0.5} colorA="#3fd0c9" colorB="#d8fff6" intensity={1.8} seed={7} grey={0.35} /> : null}
+      {t > F1_NEXT ? <Crystal position={[lerp(home[0] + 7, home[0], next), BOARD_Y + 0.7 + Math.sin(next * Math.PI) * 0.8, home[2]]} scale={0.62} spin={t * 0.5} colorA="#3fd0c9" colorB="#9ff0e6" intensity={1.15} seed={7} grey={0} /> : null}
       <ambientLight intensity={0.5} />
       <pointLight position={[2, 5, 5]} intensity={40} color="#c9d2e3" />
     </>
